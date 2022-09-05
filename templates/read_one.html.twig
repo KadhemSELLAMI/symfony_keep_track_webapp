@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    
+    <h1>{{ day.name | capitalize }} Day</h1>
+    <hr>
+    <p><strong>Description: </strong>{{ day.description }}</p>
+    <p><strong>Date: </strong>{{day.date|date('Y/m/d')}}</p>
+
+{% endblock body %}

@@ -2,31 +2,33 @@
 
 namespace App\Controller;
 
+use App\Repository\DayRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DayController extends AbstractController
 {
     /**
-     * @Route("/day", name="app_day")
+     * @Route("/", name="index")
      */
-    public function index(): JsonResponse
+    public function index(DayRepository $dayRepo)
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/DayController.php',
+        $days = $dayRepo->findAll();
+        //dd($days);
+        return $this->render('index.html.twig', [
+            "days" => $days
         ]);
     }
 
     /**
-     * @Route("/create", name="create")
+     * @Route("/read/{id}", name="read")
      */
-    public function create(): JsonResponse
+    public function read_one(DayRepository $dayRepo, $id)
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/DayController.php',
+        $day = $dayRepo->find($id);
+
+        return $this->render('read_one.html.twig', [
+            "day" => $day
         ]);
     }
 }
