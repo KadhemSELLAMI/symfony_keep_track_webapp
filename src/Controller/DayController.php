@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Day;
 use App\Form\DayType;
+use App\Repository\ExerciceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,12 +28,14 @@ class DayController extends AbstractController
     /**
      * @Route("/read/{id}", name="read")
      */
-    public function read_one(DayRepository $dayRepo, $id)
+    public function read_one(ExerciceRepository $exerciceRepo, DayRepository $dayRepo, $id)
     {
         $day = $dayRepo->find($id);
+        $exercices = $exerciceRepo->findDayExercices($id);
 
         return $this->render('read_one.html.twig', [
-            "day" => $day
+            "day" => $day,
+            "exercices" => $exercices
         ]);
     }
 
@@ -67,7 +70,6 @@ class DayController extends AbstractController
     public function delete(DayRepository $dayRepo, ManagerRegistry $doctrine, int $id)
     {
         $day = new Day();
-        //$day = $dayRepo->find($id);
 
         $em = $doctrine->getManager();
         $em->remove($day);

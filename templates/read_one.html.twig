@@ -7,4 +7,21 @@
     <p><strong>Description: </strong>{{ day.description }}</p>
     <p><strong>Date: </strong>{{day.date|date('Y/m/d')}}</p>
 
+    <table>
+        <tr>
+            <td>name</td>
+            <td>description</td>
+            <td>sets</td>
+            <td>reps</td>
+        </tr>
+        {% for exercice in exercices %}
+            <tr>
+                <td>{{ exercice.name }}</td>
+                <td>{{ exercice.description }}</td>
+                <td>{{ exercice.sets }}</td>
+                <td>{{ exercice.reps }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
 {% endblock body %}
