@@ -67,9 +67,10 @@ class DayController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete")
      */
-    public function delete(DayRepository $dayRepo, ManagerRegistry $doctrine, int $id)
+    public function delete(ExerciceRepository $exerciceRepo, DayRepository $dayRepo, ManagerRegistry $doctrine, int $id)
     {
         $day = $dayRepo->find($id);
+        $exerciceRepo->removeByDayId($id);
         $em = $doctrine->getManager();
         $em->remove($day);
         $em->flush();

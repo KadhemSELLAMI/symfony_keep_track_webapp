@@ -21,6 +21,20 @@ class ExerciceRepository extends ServiceEntityRepository
         parent::__construct($registry, Exercice::class);
     }
 
+    public function removeByDayId(int $id): void
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            DELETE FROM exercice
+            WHERE day_id = :id
+        ';
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->executeQuery(['id' => $id]);
+    }
+
+    // To be changed to findByDayId()
     public function findDayExercices(int $id): array
     {
         $conn = $this->getEntityManager()->getConnection();
