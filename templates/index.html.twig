@@ -5,18 +5,24 @@
         <table class="table border">
             <thead>
                 <th>#</th>
-                <th>name</th>
+                <th>Name</th>
                 <th>Date</th>
+                <th>Actions</th>
             </thead>
             <tbody>
                 {% for day in days %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td><a href="{{ path('read', {id: day.id}) }}">{{ day.name }}</a></td>
-                    <td><a href="">{{ day.date|date("Y/m/d") }}</a></td>
+                    <td>{{ day.name | capitalize }}</td>
+                    <td>{{ day.date|date("Y/m/d") }}</td>
+                    <td>
+                        <a href="{{ path('read', { id: day.id }) }}" class="btn btn-primary">Preview</a>
+                        <a href="{{ path('delete', { id: day.id }) }}" class="btn btn-danger">Delete</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <a href="{{ path('create') }}" class="btn btn-primary float-right">New Day</a>
     </div>
 {% endblock %}

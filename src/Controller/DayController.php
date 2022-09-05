@@ -5,6 +5,10 @@ namespace App\Controller;
 use App\Repository\DayRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Day;
+use App\Form\DayType;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Persistence\ManagerRegistry;
 
 class DayController extends AbstractController
 {
@@ -30,5 +34,45 @@ class DayController extends AbstractController
         return $this->render('read_one.html.twig', [
             "day" => $day
         ]);
+    }
+
+    /**
+     * @Route("/create", name="create")
+     */
+    public function create(Request $request, ManagerRegistry $doctrine)
+    {
+        $day = new Day();
+
+        $form = $this->createForm(DayType::class, $day);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+
+            $em = $doctrine->getManager();
+            $em->persist($day);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('index'));
+        }
+
+        return $this->render('create.html.twig', [
+            "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
+    public function delete(DayRepository $dayRepo, ManagerRegistry $doctrine, int $id)
+    {
+        $day = new Day();
+        //$day = $dayRepo->find($id);
+
+        $em = $doctrine->getManager();
+        $em->remove($day);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('index'));
     }
 }
