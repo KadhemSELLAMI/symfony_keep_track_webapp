@@ -69,8 +69,7 @@ class DayController extends AbstractController
      */
     public function delete(DayRepository $dayRepo, ManagerRegistry $doctrine, int $id)
     {
-        $day = new Day();
-
+        $day = $dayRepo->find($id);
         $em = $doctrine->getManager();
         $em->remove($day);
         $em->flush();
